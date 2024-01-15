@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+
+.paynes-gray {
+    color: #527387ff;
+}
+
+.indigo-dye {
+    color: #0E4E75ff;
+}
+
+.baby-powder {
+    color: #fdfffcff;
+}
+
+.fire-engine-red {
+    color: #c1292eff;
+}
+
+.school-bus-yellow {
+    color: #f1d302ff;
+}
+
