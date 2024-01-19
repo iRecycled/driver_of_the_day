@@ -26,3 +26,35 @@
     color: #f1d302ff;
 }
 
+.container {
+    position: relative;
+    max-width: 100%;
+}
+
+.homePageImg {
+    width: 100%;
+    position: relative;
+}
+
+.overlay-text {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    position: absolute;
+    font-size: 6vw;
+    text-shadow: 6px 6px 2px rgba(0,0,0,.6);
+}
+
+#cast {
+    top:15%;
+    left:10%;
+}
+
+#your {
+    top: 26%;
+    left: 13%;
+}
+
+#vote {
+    top: 37%;
+    left: 16%;
+}

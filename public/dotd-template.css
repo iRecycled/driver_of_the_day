@@ -1,0 +1,62 @@
+.dotd-example {
+    position: absolute;
+    background: rgba(146, 146, 146, 0.75);
+    top: 50%;
+    left: 75%;
+    width: 20vw;
+    height: 20vw;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    box-sizing: border-box;
+    max-width: 768px;
+    max-height: 768px;
+}
+
+.dotd-title {
+    color: white;
+    background: black;
+    text-align: center;
+    padding: 1vh;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: bolder;
+    height: 40px;
+    font-size: 1vw;
+    overflow: hidden;
+}
+
+.driver-rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - 30px);
+}
+
+.driver-rows:first-child {
+    padding-top: 10px;
+}
+
+.driver {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    flex: 1;
+    box-sizing: border-box;
+    padding: 5px;
+    font-size: 1.5vw;
+}
+
+.driver p {
+    margin: 0;
+}
+
+.percentage-bar {
+    height: 10px;
+    background-color: red;
+    position: absolute;
+    top: 60%;
+    left: 0;
+}

@@ -21,6 +21,10 @@ Route::get('/home', function () {
     return view('home');
 })->name('home');
 
+Route::get('race/create', function () {
+    return view('race.create');
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
