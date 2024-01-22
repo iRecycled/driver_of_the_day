@@ -1,6 +1,7 @@
 <x-app-layout>
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,14 @@
 
         </head>
     <body>
-        @livewire('iracing-api-search')
+        @livewireScripts
+        @livewireStyles
+        <div class="flex justify-center items-center p-6">
+            @livewire('iracing-api-search')
+        </div>
+        <div>
+            <p> all the drivers: <span> {{ $drivers }} </span></p>
+        </div>
     </body>
     </html>
 </x-app-layout>
