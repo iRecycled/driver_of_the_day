@@ -9,4 +9,11 @@ class Driver extends Model
 {
     protected $guarded = [];
     use HasFactory;
+    public function races() {
+        return $this->hasMany(Race::class);
+    }
+
+    public function votes() {
+        return $this->hasMany(Vote::class);
+    }
 }

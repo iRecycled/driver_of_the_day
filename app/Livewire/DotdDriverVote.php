@@ -6,6 +6,7 @@ use iRacingPHP\iRacing;
 use Livewire\Component;
 use App\Models\Driver;
 use App\Models\Vote;
+use App\Models\Race;
 
 class DotdDriverVote extends Component
 {
@@ -21,6 +22,7 @@ class DotdDriverVote extends Component
         $iracing = $this->auth();
         $drivers = $iracing->lookup->drivers(" ", ['league_id' => $this->leagueId]);
         $this->setDriver($drivers);
+        $this->setRace($drivers);
         return $drivers;
     }
 
@@ -29,6 +31,16 @@ class DotdDriverVote extends Component
             Driver::firstOrCreate([
                 'name' => $driver->display_name,
                 'cust_id' => $driver->cust_id
+            ]);
+        }
+    }
+
+    public function setRace($drivers) {
+        foreach ($drivers as $driver) {
+            Race::firstOrCreate([
+                'driver_id' => $driver->cust_id,
+                'session_id' => $this->id,
+                'league_id' => $this->leagueId
             ]);
         }
     }

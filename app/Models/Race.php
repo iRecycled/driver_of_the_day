@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Race extends Model
 {
+    protected $guarded = [];
     use HasFactory;
+    public function driver() {
+        return $this->belongsTo(Driver::class);
+    }
 }
