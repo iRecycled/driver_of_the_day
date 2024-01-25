@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Race;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class RaceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function view()
     {
         //
     }
@@ -18,9 +19,15 @@ class RaceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
+
+    public function create() {
+        return view('race.create');
+    }
+
+
+    public function vote($id) {
+        $session = Cache::get('league_session_'.$id);
+        return view('race.vote', ['session' => $session, 'id' => $id]);
     }
 
     /**

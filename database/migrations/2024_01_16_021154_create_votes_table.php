@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
+            $table->string('driver_name');
+            $table->integer('driver_id');
+            $table->integer('league_id');
+            $table->integer('session_id');
+            $table->string('ip_address');
             $table->timestamps();
         });
     }

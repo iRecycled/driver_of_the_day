@@ -3,7 +3,7 @@
         <div>
             <form wire:submit.prevent="searchByLeagueName">
                 <input type="text" class="rounded" wire:model="searchQuery" placeholder="Search for a league">
-                <button class="bg-blue-500 font-bold py-2 px-4 rounded text-white" type="submit">Search</button>
+                <button class="bg-blue-500 hover:text-blue-900 font-bold py-2 px-4 rounded text-white" type="submit">Search</button>
             </form>
         </div>
         <div class="flex justify-center items-center pt-2">
@@ -31,7 +31,7 @@
         <ul>
             @foreach($seasonList as $key => $season)
                     <li class="p-2 row-start-2 col-start-1" wire:loading.remove>
-                        <a  href="#" class="text-blue-600 hover:text-blue-900" wire:click="searchAndShowDriver('{{$key}}')"> {{ $season }}</a>
+                        <a  href="#" class="text-blue-600 hover:text-blue-900" wire:click="searchAndShowSession('{{$key}}')"> {{ $season }}</a>
                     </li>
             @endforeach
         </ul>
@@ -41,18 +41,18 @@
         </ul>
     @endif
     @endif
-    @if($lastFunctionCalled == "searchAndShowDriver")
-    @if ($driversList)
+    @if($lastFunctionCalled == "searchAndShowSession")
+    @if ($sessionsList)
         <ul>
-            @foreach($driversList as $key => $driver)
+            @foreach($sessionsList as $key => $session)
                     <li wire:loading.remove class="p-2 row-start-2 col-start-1">
-                        {{ $driver }}
+                        <a href="/race/vote/{{$key}}" class="text-blue-600 hover:text-blue-900">{{ $session }}</a>
                     </li>
             @endforeach
         </ul>
     @else
         <ul class="p-2 row-start-2 col-start-1" wire:loading.remove>
-            <p> No drivers found </p>
+            <p> No sessions found </p>
         </ul>
     @endif
     @if ($error)

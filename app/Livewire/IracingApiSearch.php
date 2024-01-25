@@ -5,12 +5,13 @@ namespace App\Livewire;
 use Exception;
 use Livewire\Component;
 use iRacingPHP\iRacing;
+use Illuminate\Support\Facades\Cache;
 
 class IracingApiSearch extends Component
 {
     public $searchQuery;
     public $lastFunctionCalled = null;
-    public $driversList = [];
+    public $sessionsList = [];
     public $leagueList = [];
     public $seasonList = [];
     public $error;
@@ -23,7 +24,7 @@ class IracingApiSearch extends Component
     public function searchByLeagueName() {
         $this->leagueList = null;
         $this->seasonList = null;
-        $this->driversList = null;
+        $this->sessionsList = null;
         $this->error = null;
         $this->loading = true;
         try {
@@ -57,25 +58,43 @@ class IracingApiSearch extends Component
         $this->lastFunctionCalled = 'searchAndShowSeason';
     }
 
-    public function searchAndShowDriver($combinedIds) {
+    public function searchAndShowSession($combinedIds) {
         try {
             $this->loading = true;
             $iracing = $this->auth();
             list($seasonId, $leagueId) = explode(',', $combinedIds);
-            $drivers = $iracing->league->season_standings($leagueId, $seasonId);
+            $allSessions = $iracing->league->season_sessions($leagueId, $seasonId);
             $this->loading = false;
-            foreach($drivers->standings->driver_standings as $key => $driver) {
-                $this->driversList[$key] = $driver->driver->display_name;
+            foreach($allSessions->sessions as $key => $session) {
+                $this->sessionsList[$session->private_session_id] = $session->track->track_name;
+                Cache::put('league_session_'.$session->private_session_id, ['leagueId' => $leagueId, 'seasonId' => $seasonId], 3600);
             }
         } catch (Exception $e) {
             $this->loading = false;
             $this->error = $e->getMessage();
         }
-        $this->lastFunctionCalled = 'searchAndShowDriver';
+        $this->lastFunctionCalled = 'searchAndShowSession';
     }
+
+    // public function searchAndShowDriver($combinedIds) {
+    //     try {
+    //         $this->loading = true;
+    //         $iracing = $this->auth();
+    //         list($seasonId, $leagueId) = explode(',', $combinedIds);
+    //         $drivers = $iracing->league->season_standings($leagueId, $seasonId);
+    //         $this->loading = false;
+    //         foreach($drivers->standings->driver_standings as $key => $driver) {
+    //             $this->driversList[$key] = $driver->driver->display_name;
+    //         }
+    //     } catch (Exception $e) {
+    //         $this->loading = false;
+    //         $this->error = $e->getMessage();
+    //     }
+    //     $this->lastFunctionCalled = 'searchAndShowDriver';
+    // }
 
     public function render()
     {
-        return view('livewire.iracing-api-search')->with(['drivers' => $this->driversList]);
+        return view('livewire.iracing-api-search');
     }
 }
