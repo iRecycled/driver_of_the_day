@@ -1,5 +1,5 @@
 <x-app-layout>
-    <title>Create a dotd vote</title>
+    <title>dotd results</title>
     <div class="flex justify-center items-center p-6">
         <p> {{ $id }}</p>
 
@@ -12,7 +12,11 @@
                 <tr>
                     <td class="py-4">{{$driver->name}}</td>
                     <td class="ml-20">
+                        @if ($driver->votes->count() == 0)
+                        <a class="py-2 px-4">{{ number_format(0,2) }}%</a>
+                        @else
                         <a class="py-2 px-4">{{ number_format($driver->votes->count() / $totalVotes * 100, 2) ?? 0 }}%</a>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

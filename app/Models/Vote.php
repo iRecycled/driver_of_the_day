@@ -14,6 +14,6 @@ class Vote extends Model
     }
 
     public function race() {
-        return $this->belongsTo(Race::class, 'driver_id', 'driver_id');
+        return $this->belongsTo(Race::class);
     }
 }

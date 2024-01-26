@@ -9,8 +9,8 @@ class Race extends Model
 {
     protected $guarded = [];
     use HasFactory;
-    public function driver() {
-        return $this->belongsTo(Driver::class, 'driver_id', 'cust_id');
+    public function drivers() {
+        return $this->belongsToMany(Driver::class);
     }
 
     public function vote() {

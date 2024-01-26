@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Driver;
 use App\Models\Vote;
 use App\Models\Race;
+use Carbon\Carbon;
 
 class DotdDriverVote extends Component
 {
@@ -21,38 +22,57 @@ class DotdDriverVote extends Component
     public function getDrivers() {
         $iracing = $this->auth();
         $drivers = $iracing->lookup->drivers(" ", ['league_id' => $this->leagueId]);
-        $this->setDriver($drivers);
-        $this->setRace($drivers);
+        $allSessions = $iracing->league->season_sessions($this->leagueId, $this->seasonId);
+        $driverModels = $this->setDrivers($drivers);
+        $race = $this->setRace($allSessions);
+        $this->attachDrivers($race, $driverModels);
         return $drivers;
     }
 
-    public function setDriver($drivers) {
+    public function setDrivers($drivers) {
+        $driverModels = [];
         foreach ($drivers as $key => $driver) {
-            Driver::firstOrCreate([
+            $driverModels[] = Driver::firstOrCreate([
                 'name' => $driver->display_name,
                 'cust_id' => $driver->cust_id
             ]);
         }
+        return $driverModels;
     }
 
-    public function setRace($drivers) {
+    public function setRace($allSessions) {
+        foreach ($allSessions->sessions as $sesh) {
+            if($sesh->subsession_id == $this->id) {
+                return Race::firstOrCreate(
+                    [
+                    'session_id' => $this->id,
+                    'league_id' => $this->leagueId,
+                    ], [
+                    'track_name' => $sesh->track->track_name,
+                    'race_time' => Carbon::parse($sesh->launch_at)
+                ]);
+            }
+        }
+    }
+
+    public function attachDrivers($race, $drivers) {
         foreach ($drivers as $driver) {
-            Race::firstOrCreate([
-                'driver_id' => $driver->cust_id,
-                'session_id' => $this->id,
-                'league_id' => $this->leagueId
-            ]);
+            $race->drivers()->sync($driver, false);
         }
     }
 
     public function castVote($driver){
-        Vote::insert([
-            'driver_name' => $driver['display_name'],
-            'driver_id' => $driver['cust_id'],
-            'league_id' => $this->leagueId,
+        Vote::updateOrCreate([
             'session_id' => $this->id,
             'ip_address' => request()->ip()
-        ]);
+        ],
+        [
+            'driver_name' => $driver['display_name'],
+            'driver_id' => $driver['cust_id'],
+            'league_id' => $this->leagueId
+        ]
+        );
+        return redirect('/race/'. $this->id .'/results');
     }
 
     public function render()

@@ -8,18 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('races', function (Blueprint $table) {
+        Schema::create('driver_race', function (Blueprint $table) {
             $table->id();
-            $table->integer('session_id');
-            $table->integer('league_id');
-            $table->string('track_name');
-            $table->date('race_time');
+            $table->integer('driver_id');
+            $table->integer('race_id');
             $table->timestamps();
+
+            $table->unique(['driver_id', 'race_id']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('races');
+        Schema::dropIfExists('driver_race');
     }
 };

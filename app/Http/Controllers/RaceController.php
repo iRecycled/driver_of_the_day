@@ -30,7 +30,7 @@ class RaceController extends Controller
 
     public function vote($id) {
         $session = Cache::get('league_session_'.$id);
-        return view('race.vote', ['session' => $session, 'id' => $id]);
+        return view('race.vote', ['session' => $session, 'season', 'id' => $id]);
     }
 
     public function results($id) {
@@ -42,25 +42,16 @@ class RaceController extends Controller
         return view('race.results', ['id' => $id, 'drivers' => $drivers, 'totalVotes' => $totalVotes]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Race $race)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Race $race)
     {
         //

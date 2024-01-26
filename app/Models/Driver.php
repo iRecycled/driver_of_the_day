@@ -10,10 +10,10 @@ class Driver extends Model
     protected $guarded = [];
     use HasFactory;
     public function races() {
-        return $this->hasMany(Race::class);
+        return $this->belongsToMany(Race::class);
     }
 
     public function votes() {
-        return $this->hasMany(Vote::class, 'driver_id', 'cust_id');
+        return $this->hasMany(Vote::class);
     }
 }

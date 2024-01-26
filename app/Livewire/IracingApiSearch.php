@@ -65,9 +65,11 @@ class IracingApiSearch extends Component
             list($seasonId, $leagueId) = explode(',', $combinedIds);
             $allSessions = $iracing->league->season_sessions($leagueId, $seasonId);
             $this->loading = false;
-            foreach($allSessions->sessions as $key => $session) {
-                $this->sessionsList[$session->private_session_id] = $session->track->track_name;
-                Cache::put('league_session_'.$session->private_session_id, ['leagueId' => $leagueId, 'seasonId' => $seasonId], 3600);
+            foreach($allSessions->sessions as $session) {
+                if(isset($session->subsession_id)){
+                    $this->sessionsList[$session->subsession_id] = $session->track->track_name;
+                    Cache::put('league_session_'.$session->subsession_id, ['leagueId' => $leagueId, 'seasonId' => $seasonId], 3600);
+                }
             }
         } catch (Exception $e) {
             $this->loading = false;
