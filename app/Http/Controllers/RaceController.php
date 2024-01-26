@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Race;
+use App\Models\Vote;
+use App\Models\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class RaceController extends Controller
 {
@@ -28,6 +31,15 @@ class RaceController extends Controller
     public function vote($id) {
         $session = Cache::get('league_session_'.$id);
         return view('race.vote', ['session' => $session, 'id' => $id]);
+    }
+
+    public function results($id) {
+        $drivers = Driver::with(['votes' => function ($query) use ($id) {
+            $query->where('session_id', $id);
+        }])->get();
+        $totalVotes = Vote::where('session_id', $id)->count();
+
+        return view('race.results', ['id' => $id, 'drivers' => $drivers, 'totalVotes' => $totalVotes]);
     }
 
     /**

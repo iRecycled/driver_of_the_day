@@ -76,23 +76,6 @@ class IracingApiSearch extends Component
         $this->lastFunctionCalled = 'searchAndShowSession';
     }
 
-    // public function searchAndShowDriver($combinedIds) {
-    //     try {
-    //         $this->loading = true;
-    //         $iracing = $this->auth();
-    //         list($seasonId, $leagueId) = explode(',', $combinedIds);
-    //         $drivers = $iracing->league->season_standings($leagueId, $seasonId);
-    //         $this->loading = false;
-    //         foreach($drivers->standings->driver_standings as $key => $driver) {
-    //             $this->driversList[$key] = $driver->driver->display_name;
-    //         }
-    //     } catch (Exception $e) {
-    //         $this->loading = false;
-    //         $this->error = $e->getMessage();
-    //     }
-    //     $this->lastFunctionCalled = 'searchAndShowDriver';
-    // }
-
     public function render()
     {
         return view('livewire.iracing-api-search');

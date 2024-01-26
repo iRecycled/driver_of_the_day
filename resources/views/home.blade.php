@@ -21,6 +21,7 @@
         <p class="overlay-text baby-powder" id="cast"> Cast </p>
         <p class="overlay-text indigo-dye" id="your">Your</p>
         <p class="overlay-text fire-engine-red" id="vote">Vote</p>
+        <a class="text-white bg-red-500 px-4 bg-white bg-opacity-25 hover:bg-opacity-50" id="home-button" href="/race/create">Create Race</a>
 
         <div class="dotd-example">
             <div class="dotd-title">
