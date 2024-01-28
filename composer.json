@@ -23,12 +23,6 @@
         "phpunit/phpunit": "^10.1",
         "spatie/laravel-ignition": "^2.0"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/iRecycled/iracing-php"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "App\\": "app/",
