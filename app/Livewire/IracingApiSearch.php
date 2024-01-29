@@ -18,7 +18,7 @@ class IracingApiSearch extends Component
     public $loading = false;
 
     public function auth() {
-        return new iRacing('npeterson1996@gmail.com', 'haXyVVBYhsnNzcjGW2Mv09X//wyfimI2ccDL7YeIp9A=', true);
+        return new iRacing(env('IRACING_EMAIL'), env('IRACING_PASSWORD'), env('IRACING_COOKIE_PATH'));
     }
 
     public function searchByLeagueName() {

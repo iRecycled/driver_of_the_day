@@ -1,23 +1,6 @@
 <x-app-layout>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-
-    <!-- Livewire Styles/Scripts -->
-    @livewireStyles
-    @livewireScripts
-
-    <!-- Alpine.js -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.x.x/dist/alpine.min.js" defer></script>
-    <link rel="stylesheet" href="{{ asset('dotd-template.css') }}">
-</head>
-<body>
-
     <div class="container">
-        <img src="{{ asset('racing_pic.jpg') }}" class="homePageImg">
+        <img src="/images/racing_pic.jpg" class="homePageImg">
         <p class="overlay-text baby-powder" id="cast"> Cast </p>
         <p class="overlay-text indigo-dye" id="your">Your</p>
         <p class="overlay-text fire-engine-red" id="vote">Vote</p>
@@ -50,6 +33,4 @@
                 </div>
         </div>
     </div>
-</body>
-</html>
 </x-app-layout>

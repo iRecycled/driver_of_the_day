@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "861267ee2c8dbf0e35e450b64f82821f",
+    "content-hash": "6ac54d8808629d21538cab48a50d25c2",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1148,45 +1148,6 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
-        },
-        {
-            "name": "irecycled/iracing-php",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/iRecycled/iracing-php.git",
-                "reference": "ab5d0b60b82e1aa8a064248c8d59ffdcf28b2af2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/iRecycled/iracing-php/zipball/ab5d0b60b82e1aa8a064248c8d59ffdcf28b2af2",
-                "reference": "ab5d0b60b82e1aa8a064248c8d59ffdcf28b2af2",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^7.4",
-                "php": ">=7.4"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "iRacingPHP\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "irecycled"
-                }
-            ],
-            "description": "iRacing Data API wrapper for PHP",
-            "support": {
-                "source": "https://github.com/iRecycled/iracing-php/tree/main"
-            },
-            "time": "2023-10-27T16:58:57+00:00"
         },
         {
             "name": "laravel/fortify",
@@ -8719,14 +8680,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "irecycled/iracing-php": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.6.0"
 }
