@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->integer('session_id');
             $table->integer('league_id');
+            $table->integer('season_id');
             $table->string('track_name');
             $table->date('race_time');
             $table->timestamps();

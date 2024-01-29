@@ -24,6 +24,7 @@ Route::get('/home', function () {
 Route::get('race/create', '\App\Http\Controllers\RaceController@create');
 Route::get('race/vote/{id}', '\App\Http\Controllers\RaceController@vote');
 Route::get('race/{id}/results', '\App\Http\Controllers\RaceController@results');
+Route::get('race/links/{id}', '\App\Http\Controllers\RaceController@links');
 
 Route::middleware([
     'auth:sanctum',

@@ -8,6 +8,7 @@ use App\Models\Driver;
 use App\Models\Vote;
 use App\Models\Race;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DotdDriverVote extends Component
 {
@@ -48,6 +49,7 @@ class DotdDriverVote extends Component
                     'session_id' => $this->id,
                     'league_id' => $this->leagueId,
                     ], [
+                    'season_id' => $this->seasonId,
                     'track_name' => $sesh->track->track_name,
                     'race_time' => Carbon::parse($sesh->launch_at)
                 ]);
@@ -61,17 +63,30 @@ class DotdDriverVote extends Component
         }
     }
 
-    public function castVote($driver){
-        Vote::updateOrCreate([
+    public function castVote($vote){
+        $race = Race::where('session_id', $this->id)->first();
+        $driver = Driver::where('cust_id', $vote['cust_id'])->first();
+
+        $vote = Vote::updateOrCreate([
             'session_id' => $this->id,
             'ip_address' => request()->ip()
         ],
         [
-            'driver_name' => $driver['display_name'],
-            'driver_id' => $driver['cust_id'],
+            'driver_name' => $driver->name,
+            'driver_id' => $driver->cust_id,
             'league_id' => $this->leagueId
         ]
         );
+        $existingRecord = DB::table('driver_race_votes')
+        ->where('vote_id', $vote->id)
+        ->first();
+        if($existingRecord) {
+            DB::table('driver_race_votes')
+            ->where('vote_id', $vote->id)
+            ->delete();
+        }
+
+        $vote->drivers()->attach($driver->id, ['race_id' => $race->id]);
         return redirect('/race/'. $this->id .'/results');
     }
 

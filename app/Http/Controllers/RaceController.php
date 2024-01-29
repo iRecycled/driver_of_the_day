@@ -29,17 +29,30 @@ class RaceController extends Controller
 
 
     public function vote($id) {
-        $session = Cache::get('league_session_'.$id);
-        return view('race.vote', ['session' => $session, 'season', 'id' => $id]);
+        $leagueId = null;
+        $seasonId = null;
+        if(Cache::get('league_session_'.$id) != null) {
+            $session = Cache::get('league_session_'.$id);
+            $leagueId = $session['leagueId'];
+            $seasonId = $session['seasonId'];
+        } else {
+            $session = Race::where('session_id', $id)->first();
+            $leagueId = $session->league_id;
+            $seasonId = $session->season_id;
+        }
+        return view('race.vote', ['leagueId' => $leagueId, 'seasonId' => $seasonId, 'id' => $id]);
     }
 
     public function results($id) {
-        $drivers = Driver::with(['votes' => function ($query) use ($id) {
-            $query->where('session_id', $id);
-        }])->get();
-        $totalVotes = Vote::where('session_id', $id)->count();
+        $race = Race::where('session_id', $id)->first();
+        $drivers = $race->drivers()->get();
+        $totalVotes = Vote::where('session_id', $id)->get();
 
-        return view('race.results', ['id' => $id, 'drivers' => $drivers, 'totalVotes' => $totalVotes]);
+        return view('race.results', ['id' => $id, 'drivers' => $drivers, 'totalVotes' => $totalVotes->count()]);
+    }
+
+    public function links($id) {
+        return view('race.links', ['id' => $id]);
     }
 
     public function store(Request $request)

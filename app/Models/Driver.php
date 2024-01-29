@@ -14,6 +14,6 @@ class Driver extends Model
     }
 
     public function votes() {
-        return $this->hasMany(Vote::class);
+        return $this->belongsToMany(Vote::class, 'driver_race_votes')->withTimestamps();
     }
 }
