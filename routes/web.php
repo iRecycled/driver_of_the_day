@@ -13,13 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/home', function () {
+Route::get('/{home?}', function () {
     return view('home');
-})->name('home');
+})->where('home', '(home)?')->name('home');
 
 Route::get('race/create', '\App\Http\Controllers\RaceController@create');
 Route::get('race/vote/{id}', '\App\Http\Controllers\RaceController@vote');
