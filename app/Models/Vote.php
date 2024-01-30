@@ -10,7 +10,7 @@ class Vote extends Model
     protected $guarded = [];
     use HasFactory;
     public function driver() {
-        return $this->belongsTo(Driver::class, 'cust_id', 'driver_id');
+        return $this->belongsTo(Driver::class);
     }
 
     public function race() {

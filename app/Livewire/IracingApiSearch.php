@@ -7,6 +7,10 @@ use Livewire\Component;
 use iRacingPHP\iRacing;
 use Illuminate\Support\Facades\Cache;
 
+use App\Models\Race;
+
+use Carbon\Carbon;
+
 class IracingApiSearch extends Component
 {
     public $searchQuery;
@@ -29,7 +33,12 @@ class IracingApiSearch extends Component
         $this->loading = true;
         try {
             $iracing = $this->auth();
-            $leagueNames = $iracing->league->directory(['search' => $this->searchQuery]);
+            $cacheKey = 'leagueNames_' . md5($this->searchQuery);
+
+            $leagueNames = Cache::remember($cacheKey, 180, function () use ($iracing) {
+                return $iracing->league->directory(['search' => $this->searchQuery]);
+            });
+
             foreach ($leagueNames->results_page as $key => $league) {
                 $this->leagueList[$league->league_id] = $league->league_name;
             }
@@ -46,7 +55,9 @@ class IracingApiSearch extends Component
         try {
             $this->loading = true;
             $iracing = $this->auth();
-            $seasons = $iracing->league->seasons($leagueId);
+            $seasons = Cache::remember('seasons_' . $leagueId, 180, function () use ($iracing, $leagueId) {
+                return $iracing->league->seasons($leagueId);
+            });
             $this->loading = false;
             foreach ($seasons->seasons as $key => $season) {
                 $this->seasonList[$season->season_id . "," . $season->league_id] = $season->season_name;
@@ -68,6 +79,18 @@ class IracingApiSearch extends Component
             foreach($allSessions->sessions as $session) {
                 if(isset($session->subsession_id)){
                     $this->sessionsList[$session->subsession_id] = $session->track->track_name;
+                    
+                    # Add the race to the database
+                    $race = Race::updateOrCreate(
+                        ['session_id' => $session->subsession_id, 'league_id' => $leagueId],
+                        [
+                            'track_name' => $session->track->track_name,
+                            'race_time' => Carbon::parse($session->launch_at),
+                            'time_limit' => $session->time_limit,
+                            'season_id' => $session->league_season_id,
+                        ]
+                    );
+
                     Cache::put('league_session_'.$session->subsession_id, ['leagueId' => $leagueId, 'seasonId' => $seasonId], 3600);
                 }
             }

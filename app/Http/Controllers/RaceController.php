@@ -29,8 +29,8 @@ class RaceController extends Controller
 
 
     public function vote($id) {
-        $session = Cache::get('league_session_'.$id);
-        return view('race.vote', ['session' => $session, 'season', 'id' => $id]);
+        $race = Race::where('session_id', $id)->first();
+        return view('race.vote', ['race' => $race]);
     }
 
     public function results($id) {
