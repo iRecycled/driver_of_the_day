@@ -35,11 +35,6 @@
         <style>
             {!! Vite::content('resources/css/dotd-template.css') !!}
         </style>
-        {{-- <link rel="stylesheet" href="{{ asset('dotd-template.css') }}"> --}}
-
-        <!-- Alpine.js -->
-        <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.x.x/dist/alpine.min.js" defer></script>
-        
     </head>
     <body class="font-sans antialiased">
         <x-banner />
