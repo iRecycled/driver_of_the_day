@@ -8,21 +8,10 @@ use App\Models\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use chillerlan\QRCode\QRCode;
 
 class RaceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function view()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-
     public function create() {
         return view('race.create');
     }
@@ -52,37 +41,26 @@ class RaceController extends Controller
     }
 
     public function links($id) {
-        return view('race.links', ['id' => $id]);
+        $QRurl = url('/race/vote/' . $id);
+        $url = url('/race/qr/'. $id);
+        $qr = (new QRCode)->render($QRurl);
+        return view('race.links', ['id' => $id, 'qr' => $qr, 'url' => $url]);
     }
 
-    public function store(Request $request)
-    {
-        //
+    public function showQR($id) {
+        $url = url('/race/vote/' . $id);
+        $qr = (new QRCode)->render($url);
+        return view('race.qr', ['qr' => $qr]);
     }
 
-    public function show(Race $race)
-    {
-        //
-    }
-
-    public function edit(Race $race)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Race $race)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Race $race)
-    {
-        //
+    public function showDOTD($id) {
+        $race = Race::where('session_id', $id)->first();
+        $drivers = $race->drivers()->get();
+        $top3 = $drivers->sortByDesc(function ($driver) {
+            return $driver->votes()->count();
+        })->take(3);
+        $top3col = collect($top3, Driver::class);
+        $totalVotes = Vote::where('session_id', $id)->get();
+        return view('race.dotd', ['drivers' => $top3col, 'totalVotes' => $totalVotes]);
     }
 }
