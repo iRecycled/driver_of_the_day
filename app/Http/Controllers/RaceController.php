@@ -44,7 +44,8 @@ class RaceController extends Controller
         $QRurl = url('/race/vote/' . $id);
         $url = url('/race/qr/'. $id);
         $qr = (new QRCode)->render($QRurl);
-        return view('race.links', ['id' => $id, 'qr' => $qr, 'url' => $url]);
+        $dotdUrl = url('/race/dotd/'. $id);
+        return view('race.links', ['id' => $id, 'qr' => $qr, 'url' => $url, 'dotdUrl' => $dotdUrl]);
     }
 
     public function showQR($id) {
