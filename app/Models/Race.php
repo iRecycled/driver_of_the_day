@@ -17,6 +17,9 @@ class Race extends Model
         return $this->hasMany(Vote::class);
     }
 
+    public function getTotalVotes() {
+        return $this->votes()->count();
+    }
     /**
      * Delivers the votes grouped by each name
      */

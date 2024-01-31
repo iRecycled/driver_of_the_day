@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('races', function (Blueprint $table) {
             $table->timestamp('race_time')->change();
             $table->integer('time_limit')->default(30)->after('race_time');
-            $table->bigInteger('season_id')->after('league_id');
         });
     }
 
@@ -26,7 +25,6 @@ return new class extends Migration
         Schema::table('races', function (Blueprint $table) {
             $table->date('race_time')->change();
             $table->dropColumn('time_limit');
-            $table->dropColumn('season_id');
         });
     }
 };
