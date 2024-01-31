@@ -67,26 +67,16 @@ class DotdDriverVote extends Component
         $race = Race::where('session_id', $this->id)->first();
         $driver = Driver::where('cust_id', $vote['cust_id'])->first();
 
-        $vote = Vote::updateOrCreate([
-            'session_id' => $this->id,
+        Vote::updateOrCreate([
+            'race_id' => $race->id,
             'ip_address' => request()->ip()
         ],
         [
             'driver_name' => $driver->name,
-            'driver_id' => $driver->cust_id,
+            'driver_id' => $driver->id,
             'league_id' => $this->leagueId
         ]
         );
-        $existingRecord = DB::table('driver_race_votes')
-        ->where('vote_id', $vote->id)
-        ->first();
-        if($existingRecord) {
-            DB::table('driver_race_votes')
-            ->where('vote_id', $vote->id)
-            ->delete();
-        }
-
-        $vote->drivers()->attach($driver->id, ['race_id' => $race->id]);
         return redirect('/race/'. $this->id .'/results');
     }
 

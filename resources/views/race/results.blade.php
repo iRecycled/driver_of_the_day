@@ -4,13 +4,16 @@
 
         <table>
             <thead>
-                @foreach ($drivers->sortByDesc(function ($driver) {
-                    return $driver->votes()->count();
+                @foreach ($drivers->sortByDesc(function ($driver) use ($race){
+                    return $driver->getDriverVotes($race->id);
                 }) as $driver)
                 <tr>
                     <td class="py-4">{{$driver->name}}</td>
                     <td class="ml-20">
-                        <a class="py-2 px-4">{{ number_format($driver->votes->count() / $totalVotes * 100, 2) ?? 0 }}%</a>
+                        @if ($race->getTotalVotes() == 0)
+                        <a class="py-2 px-4">{{ number_format(0, 2)}}%</a>
+                        @endif
+                        <a class="py-2 px-4">{{ number_format($driver->getDriverVotes($race->id) / $race->getTotalVotes() * 100, 2) ?? 0 }}%</a>
                     </td>
                 </tr>
                 @endforeach

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('driver_name');
             $table->integer('driver_id');
             $table->integer('league_id');
-            $table->integer('session_id');
+            $table->integer('race_id');
             $table->string('ip_address');
             $table->timestamps();
         });

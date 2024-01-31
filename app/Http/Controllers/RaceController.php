@@ -33,11 +33,9 @@ class RaceController extends Controller
     }
 
     public function results($id) {
-        $race = Race::where('session_id', $id)->first();
+        $race = Race::where('session_id', $id)->with('drivers.votes')->first();
         $drivers = $race->drivers()->get();
-        $totalVotes = Vote::where('session_id', $id)->get();
-
-        return view('race.results', ['id' => $id, 'drivers' => $drivers, 'totalVotes' => $totalVotes->count()]);
+        return view('race.results', ['id' => $id, 'drivers' => $drivers, 'race' => $race]);
     }
 
     public function links($id) {
