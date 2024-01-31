@@ -63,18 +63,15 @@ class DotdDriverVote extends Component
         }
     }
 
-    public function castVote($vote){
+    public function castVote($driver){
         $race = Race::where('session_id', $this->id)->first();
-        $driver = Driver::where('cust_id', $vote['cust_id'])->first();
-
+        $driver = Driver::where('cust_id', $driver['cust_id'])->first();
         Vote::updateOrCreate([
             'race_id' => $race->id,
             'ip_address' => request()->ip()
         ],
         [
-            'driver_name' => $driver->name,
             'driver_id' => $driver->id,
-            'league_id' => $this->leagueId
         ]
         );
         return redirect('/race/'. $this->id .'/results');

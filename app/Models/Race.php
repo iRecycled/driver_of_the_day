@@ -17,7 +17,34 @@ class Race extends Model
         return $this->hasMany(Vote::class);
     }
 
-    public function getTotalVotes() {
-        return $this->votes()->count();
+    /**
+     * Delivers the votes grouped by each name
+     */
+    public function votesByDriverName() {
+        return $this->votes()
+            ->with('driver')
+            ->get()
+            ->groupBy('driver.name')
+            ->map(function ($votes) {
+                return [
+                    'count' => $votes->count(),
+                    'votes' => $votes,
+                ];
+            });
+    }
+
+    /**
+     * Delivers the votes grouped by each name
+     */
+    public function voteCounts() {
+        return $this->votes()
+            ->with('driver')
+            ->get()
+            ->groupBy('driver.name')
+            ->map(function ($votes) {
+                return [
+                    'count' => $votes->count(),
+                ];
+            });
     }
 }

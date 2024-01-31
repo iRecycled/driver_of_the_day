@@ -18,18 +18,8 @@ class RaceController extends Controller
 
 
     public function vote($id) {
-        $leagueId = null;
-        $seasonId = null;
-        if(Cache::get('league_session_'.$id) != null) {
-            $session = Cache::get('league_session_'.$id);
-            $leagueId = $session['leagueId'];
-            $seasonId = $session['seasonId'];
-        } else {
-            $session = Race::where('session_id', $id)->first();
-            $leagueId = $session->league_id;
-            $seasonId = $session->season_id;
-        }
-        return view('race.vote', ['leagueId' => $leagueId, 'seasonId' => $seasonId, 'id' => $id]);
+        $race = Race::where('session_id', $id)->first();
+        return view('race.vote', ['race' => $race]);
     }
 
     public function results($id) {

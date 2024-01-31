@@ -5,6 +5,7 @@
         <a class="bg-blue-500 text-white hover:text-blue-900 p-2 ml-6 rounded" href="/race/{{$id}}/results">View Results</a>
     </div>
     <div class="flex justify-center items-center p-6">
-        @livewire('dotd-driver-vote', ['leagueId' => $leagueId, 'seasonId' => $seasonId, 'id' => $id])
+        <p> {{ $race->session_id }}</p>
+        @livewire('dotd-driver-vote', ['leagueId' => $race->league_id, 'seasonId' => $race->season_id, 'id' => $race->session_id])
     </div>
 </x-app-layout>
