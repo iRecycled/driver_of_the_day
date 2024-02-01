@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class DotdDriverVote extends Component
 {
-    public $leagueId;
-    public $seasonId;
-    public $id;
+    public $race;
 
     public function auth() {
         return new iRacing(env('IRACING_EMAIL'), env('IRACING_PASSWORD'), env('IRACING_COOKIE_PATH'));
@@ -22,8 +20,8 @@ class DotdDriverVote extends Component
 
     public function getDrivers() {
         $iracing = $this->auth();
-        $drivers = $iracing->lookup->drivers(" ", ['league_id' => $this->leagueId]);
-        $allSessions = $iracing->league->season_sessions($this->leagueId, $this->seasonId);
+        $drivers = $iracing->lookup->drivers(" ", ['league_id' => $this->race->league_id]);
+        $allSessions = $iracing->league->season_sessions($this->race->league_id, $this->race->season_id);
         $driverModels = $this->setDrivers($drivers);
         $race = $this->setRace($allSessions);
         $this->attachDrivers($race, $driverModels);
@@ -43,13 +41,13 @@ class DotdDriverVote extends Component
 
     public function setRace($allSessions) {
         foreach ($allSessions->sessions as $sesh) {
-            if($sesh->subsession_id == $this->id) {
+            if($sesh->subsession_id == $this->race->session_id) {
                 return Race::firstOrCreate(
                     [
-                    'session_id' => $this->id,
-                    'league_id' => $this->leagueId,
+                    'session_id' => $this->race->session_id,
+                    'league_id' => $this->race->league_id,
                     ], [
-                    'season_id' => $this->seasonId,
+                    'season_id' => $this->race->season_id,
                     'track_name' => $sesh->track->track_name,
                     'race_time' => Carbon::parse($sesh->launch_at)
                 ]);
@@ -64,7 +62,7 @@ class DotdDriverVote extends Component
     }
 
     public function castVote($driver){
-        $race = Race::where('session_id', $this->id)->first();
+        $race = Race::where('session_id', $this->race->session_id)->first();
         $driver = Driver::where('cust_id', $driver['cust_id'])->first();
         Vote::updateOrCreate([
             'race_id' => $race->id,
@@ -74,7 +72,7 @@ class DotdDriverVote extends Component
             'driver_id' => $driver->id,
         ]
         );
-        return redirect('/race/'. $this->id .'/results');
+        return redirect('/race/'. $this->race->session_id .'/results');
     }
 
     public function render()

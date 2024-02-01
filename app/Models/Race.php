@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DateTime;
+use DateTimeZone;
 
 class Race extends Model
 {
@@ -15,6 +17,18 @@ class Race extends Model
 
     public function votes() {
         return $this->hasMany(Vote::class);
+    }
+
+    public function getTimeLeftToVote() {
+        $raceStartTime = new DateTime($this->race_time, new DateTimeZone('UTC'));
+        $raceEndTime = clone $raceStartTime;
+        $raceEndTime->modify("+{$this->time_limit} minutes");
+        $currentTime = new DateTime('now', new DateTimeZone('UTC'));
+        $countdown = null;
+        if($currentTime >= $raceStartTime && $currentTime <= $raceEndTime) {
+            $countdown = $raceEndTime->getTimestamp() - $currentTime->getTimestamp();
+        }
+        return $countdown;
     }
 
     public function getTotalVotes() {
