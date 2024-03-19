@@ -46,10 +46,10 @@ class RaceController extends Controller
         $race = Race::where('session_id', $id)->first();
         $drivers = $race->drivers()->get();
         $top3 = $drivers->sortByDesc(function ($driver) {
-            return $driver->votes()->count();
+            return $driver->votes->count();
         })->take(3);
         $top3col = collect($top3, Driver::class);
-        $totalVotes = Vote::where('session_id', $id)->get();
-        return view('race.dotd', ['drivers' => $top3col, 'totalVotes' => $totalVotes]);
+        $totalVotes = $race->getTotalVotes();
+        return view('race.dotd', ['drivers' => $top3col, 'totalVotes' => $totalVotes, 'race' => $race]);
     }
 }

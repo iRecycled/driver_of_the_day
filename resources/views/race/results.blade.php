@@ -12,8 +12,9 @@
                     <td class="ml-20">
                         @if ($race->getTotalVotes() == 0)
                         <a class="py-2 px-4">{{ number_format(0, 2)}}%</a>
-                        @endif
+                        @else
                         <a class="py-2 px-4">{{ number_format($driver->getDriverVotes($race->id) / $race->getTotalVotes() * 100, 2) ?? 0 }}%</a>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

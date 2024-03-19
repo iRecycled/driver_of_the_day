@@ -20,7 +20,9 @@ class DotdDriverVote extends Component
 
     public function getDrivers() {
         $iracing = $this->auth();
-        $drivers = $iracing->lookup->drivers(" ", ['league_id' => $this->race->league_id]);
+        // $drivers = $iracing->lookup->drivers(" ", ['league_id' => $this->race->league_id]);
+        $league = $iracing->league->get($this->race->league_id);
+        $drivers = $league->roster;
         $allSessions = $iracing->league->season_sessions($this->race->league_id, $this->race->season_id);
         $driverModels = $this->setDrivers($drivers);
         $race = $this->setRace($allSessions);
