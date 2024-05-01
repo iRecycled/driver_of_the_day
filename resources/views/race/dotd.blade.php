@@ -18,6 +18,11 @@
         </div>
     </div> --}}
 
+    <div wire:poll.750ms>
+
+        Current time: {{ now() }}
+
+    </div>
     <div class="flex flex-col">
         <div class="flex bg-black-500 justify-center">
             <h1>VOTE FOR DRIVER OF THE DAY</h1>
