@@ -16,7 +16,6 @@ class RaceController extends Controller
         return view('race.create');
     }
 
-
     public function vote($id) {
         $race = Race::where('session_id', $id)->first();
         return view('race.vote', ['race' => $race]);
@@ -50,6 +49,6 @@ class RaceController extends Controller
         })->take(3);
         $top3col = collect($top3, Driver::class);
         $totalVotes = $race->getTotalVotes();
-        return view('race.dotd', ['drivers' => $top3col, 'totalVotes' => $totalVotes, 'race' => $race]);
+        return view('race.dotd', ['drivers' => $top3col, 'totalVotes' => $totalVotes, 'race' => $race, 'id' => $id]);
     }
 }
