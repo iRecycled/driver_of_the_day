@@ -11,7 +11,7 @@
                 <p class="flex flex-row justify-start text-black">#{{$loop->index + 1}}</p>
                 <p class="flex flex-row justify-center text-black">{{$driver->name}}</p>
                 @php
-                    $percentageVotes = ($totalVotes != 0) ? ($driver->getDriverVotes($race->id) / $totalVotes * 100) : 0;
+                    $percentageVotes = ($totalVotes != 0) ? number_format($driver->getDriverVotes($race->id) / $totalVotes * 100, 2) : 0;
                 @endphp
                     <p class="flex flex-row justify-end text-black">{{ $percentageVotes }}%</p>
                     </span>
