@@ -59,9 +59,11 @@ class RaceController extends Controller
 
         $retDriversA = [];
         $dbDrivers->each(function ($driver) use (&$retDriversA, &$totalVotes, &$race) {
+            $driverVotes = $driver->getDriverVotes($race->id);
             array_push($retDriversA, [
                 'name' => $driver->name,
-                'votes' => ($totalVotes > 0) ? $driver->getDriverVotes($race->id) / $totalVotes : -1
+                'percentage' => ($totalVotes > 0) ? $driverVotes / $totalVotes : -1,
+                'votes' => ($totalVotes > 0) ? $driverVotes : -1
             ]);
         });
 
