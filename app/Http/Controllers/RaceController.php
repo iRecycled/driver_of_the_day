@@ -51,4 +51,20 @@ class RaceController extends Controller
         $totalVotes = $race->getTotalVotes();
         return view('race.dotd', ['drivers' => $top3col, 'totalVotes' => $totalVotes, 'race' => $race, 'id' => $id]);
     }
+
+    public function resultsAPI($id) {
+        $race = Race::where('session_id', $id)->with('drivers.votes')->first();
+        $dbDrivers = $race->drivers()->get();
+        $totalVotes = $race->getTotalVotes();
+
+        $retDriversA = [];
+        $dbDrivers->each(function ($driver) use (&$retDriversA, &$totalVotes, &$race) {
+            array_push($retDriversA, [
+                'name' => $driver->name,
+                'votes' => ($totalVotes > 0) ? $driver->getDriverVotes($race->id) / $totalVotes : -1
+            ]);
+        });
+
+        return ['data' => ['drivers' => $retDriversA, 'subsession' => $id]];
+    }
 }
