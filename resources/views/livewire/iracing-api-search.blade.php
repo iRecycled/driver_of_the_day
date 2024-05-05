@@ -46,7 +46,8 @@
         <ul>
             @foreach($sessionsList as $key => $session)
                     <li wire:loading.remove class="p-2 row-start-2 col-start-1">
-                        <a href="/race/vote/{{$key}}" class="text-blue-600 hover:text-blue-900">{{ $session }}</a>
+                        <a href="/race/vote/{{$key}}" class="text-blue-600 hover:text-blue-900">{{ $session[0] }}</a>
+                        <a class="pl-4"> {{ $session[1] }} </a>
                     </li>
             @endforeach
         </ul>

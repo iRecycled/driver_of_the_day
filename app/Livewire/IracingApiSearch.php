@@ -78,8 +78,11 @@ class IracingApiSearch extends Component
             $this->loading = false;
             foreach($allSessions->sessions as $session) {
                 if(isset($session->subsession_id)){
-                    $this->sessionsList[$session->subsession_id] = $session->track->track_name;
-                    
+                    $this->sessionsList[$session->subsession_id] = [
+                        $session->track->track_name,
+                        Carbon::parse($session->launch_at)->format('F jS, Y')
+                    ];
+
                     # Add the race to the database
                     $race = Race::updateOrCreate(
                         ['session_id' => $session->subsession_id, 'league_id' => $leagueId],

@@ -1,5 +1,6 @@
 <x-app-layout>
     <div class="container">
+        <title>Driver of the day</title>
         <img src="/images/racing_pic.jpg" class="homePageImg">
         <p class="overlay-text baby-powder" id="cast"> Cast </p>
         <p class="overlay-text indigo-dye" id="your">Your</p>

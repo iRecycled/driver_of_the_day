@@ -1,5 +1,5 @@
 <x-app-layout>
-        <title>Create a dotd vote</title>
+        <title>Find a Race</title>
         <div class="flex justify-center items-center p-6">
             @livewire('iracing-api-search')
         </div>
