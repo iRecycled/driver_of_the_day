@@ -24,6 +24,8 @@ Route::get('race/links/{id}', '\App\Http\Controllers\RaceController@links');
 Route::get('race/qr/{id}', '\App\Http\Controllers\RaceController@showQR');
 Route::get('race/dotd/{id}', '\App\Http\Controllers\RaceController@showDOTD');
 
+Route::get('raceapi/{id}/results', '\App\Http\Controllers\RaceController@resultsAPI');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

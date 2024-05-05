@@ -27,6 +27,22 @@ class RaceController extends Controller
         return view('race.results', ['id' => $id, 'drivers' => $drivers, 'race' => $race]);
     }
 
+    public function resultsAPI($id) {
+        $race = Race::where('session_id', $id)->with('drivers.votes')->first();
+        $dbDrivers = $race->drivers()->get();
+        $totalVotes = $race->getTotalVotes();
+
+        $retDriversA = [];
+        $dbDrivers->each(function ($driver) use (&$retDriversA, &$totalVotes, &$race) {
+            array_push($retDriversA, [
+                'name' => $driver->name,
+                'votes' => ($totalVotes > 0) ? $driver->getDriverVotes($race->id) / $totalVotes : -1
+            ]);
+        });
+
+        return ['data' => ['drivers' => $retDriversA, 'subsession' => $id]];
+    }
+
     public function links($id) {
         $QRurl = url('/race/vote/' . $id);
         $url = url('/race/qr/'. $id);
