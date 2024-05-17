@@ -14,8 +14,8 @@ class DotdStreamerResultsPage extends Component
     {
         $race = Race::where('session_id', $this->id)->first();
         $drivers = $race->drivers()->get();
-        $top3 = $drivers->sortByDesc(function ($driver) {
-            return $driver->votes->count();
+        $top3 = $drivers->sortByDesc(function ($driver) use ($race) {
+            return $driver->votes->where('race_id', $race->id)->count();
         })->take(3);
         $totalVotes = $race->getTotalVotes();
 
