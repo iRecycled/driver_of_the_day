@@ -17,11 +17,10 @@ class DotdStreamerResultsPage extends Component
         $top3 = $drivers->sortByDesc(function ($driver) {
             return $driver->votes->count();
         })->take(3);
-        $top3col = collect($top3, Driver::class);
         $totalVotes = $race->getTotalVotes();
 
         return view('livewire.dotd-streamer-results-page', [
-            'drivers' => $top3col,
+            'drivers' => $top3,
             'totalVotes' => $totalVotes,
             'race' => $race,
         ]);
