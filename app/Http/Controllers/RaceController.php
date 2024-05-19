@@ -52,7 +52,7 @@ class RaceController extends Controller
         return view('race.dotd', ['drivers' => $top3col, 'totalVotes' => $totalVotes, 'race' => $race, 'id' => $id]);
     }
 
-    function resultsAPI($id) {
+    public function resultsAPI($id) {
         $retDriversA = [];
 
         $race = Race::where('session_id', $id)->with('drivers.votes')->first();
