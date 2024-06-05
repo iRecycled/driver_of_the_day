@@ -53,19 +53,24 @@ class RaceController extends Controller
     }
 
     public function resultsAPI($id) {
-        $race = Race::where('session_id', $id)->with('drivers.votes')->first();
-        $dbDrivers = $race->drivers()->get();
-        $totalVotes = $race->getTotalVotes();
-
         $retDriversA = [];
-        $dbDrivers->each(function ($driver) use (&$retDriversA, &$totalVotes, &$race) {
-            $driverVotes = $driver->getDriverVotes($race->id);
-            array_push($retDriversA, [
-                'name' => $driver->name,
-                'percentage' => ($totalVotes > 0) ? $driverVotes / $totalVotes : -1,
-                'votes' => ($totalVotes > 0) ? $driverVotes : -1
-            ]);
-        });
+
+        $race = Race::where('session_id', $id)->with('drivers.votes')->first();
+
+        if ($race) {
+            $dbDrivers = $race->drivers()->get();
+            $totalVotes = $race->getTotalVotes();
+
+
+            $dbDrivers->each(function ($driver) use (&$retDriversA, &$totalVotes, &$race) {
+                $driverVotes = $driver->getDriverVotes($race->id);
+                array_push($retDriversA, [
+                    'name' => $driver->name,
+                    'percentage' => ($totalVotes > 0) ? $driverVotes / $totalVotes : -1,
+                    'votes' => ($totalVotes > 0) ? $driverVotes : -1
+                ]);
+            });
+        }
 
         return ['data' => ['drivers' => $retDriversA, 'subsession' => $id]];
     }
