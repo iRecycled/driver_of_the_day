@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('{id}/results', '\App\Http\Controllers\RaceController@resultsAPI');
+Route::get('/leaguezero', '\App\Http\Controllers\ApiController@getLeagueZeroRoster');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
