@@ -28,6 +28,7 @@ class ApiController extends Controller
 
         $htmlTable = '
         <style>
+            @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap");
             table {
                 width: 100%;
                 border-collapse: collapse;
@@ -36,13 +37,15 @@ class ApiController extends Controller
                 text-align: left;
                 font-family: "Cairo", sans-serif;
                 font-weight: bold;
+                text-color: #2F2E2E
             }
             th, td {
                 padding: 12px;
                 border-bottom: 1px solid #ddd;
             }
             th {
-                background-color: #f9f9f9;
+                background-color: black;
+                color: white;
             }
             tr {
                 background-color: #f9f9f9;
