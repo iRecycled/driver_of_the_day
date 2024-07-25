@@ -41,10 +41,13 @@ class ApiController extends Controller
                 border-bottom: 1px solid #ddd;
             }
             th {
-                background-color: #f1f1f1;
+                background-color: #f9f9f9;
+            }
+            tr {
+                background-color: #f9f9f9;
             }
             tr:hover {
-                background-color: #f9f9f9;
+                background-color: #f1f1f1;
             }
         </style>
         <table>
