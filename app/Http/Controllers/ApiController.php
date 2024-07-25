@@ -35,6 +35,7 @@ class ApiController extends Controller
                 font-size: 18px;
                 text-align: left;
                 font-family: "Cairo", sans-serif;
+                font-weight: bold;
             }
             th, td {
                 padding: 12px;
