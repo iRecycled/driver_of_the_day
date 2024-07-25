@@ -34,15 +34,13 @@ class ApiController extends Controller
                 margin: 20px 0;
                 font-size: 18px;
                 text-align: left;
+                font-family: "Cairo", sans-serif;
             }
             th, td {
                 padding: 12px;
                 border-bottom: 1px solid #ddd;
             }
             th {
-                background-color: #f2f2f2;
-            }
-            tr:nth-child(even) {
                 background-color: #f9f9f9;
             }
             tr:hover {
