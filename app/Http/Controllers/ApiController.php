@@ -17,10 +17,14 @@ class ApiController extends Controller
         $driversData = [];
         foreach ($drivers as $driver) {
             $driversData[] = [
-                'name' => $driver->display_name,
+                'name' => $driver->nick_name == null ? $driver->display_name : $driver->nick_name,
                 'number' => $driver->car_number
             ];
         }
+
+        usort($driversData, function($a, $b) {
+            return $a['number'] <=> $b['number'];
+        });
 
         $htmlTable = '
         <style>
