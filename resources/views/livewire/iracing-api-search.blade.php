@@ -16,7 +16,15 @@
             <ul>
             @foreach($leagueList as $key => $league)
                     <li class="p-2 row-start-2 col-start-1" wire:loading.remove>
-                        <a href="#" class="text-blue-600 hover:text-blue-900" wire:click="searchAndShowSeason('{{$key}}')"> {{ $league }}</a>
+                        <a href="#"
+                            wire:click="searchAndShowSeason('{{ $key }}')"
+                            onclick="updateSearchUrl('{{ $key }}'); return false;"
+                            class="text-blue-600 hover:text-blue-900"
+                        >
+                            {{ $league }}
+                        </a>
+
+
                     </li>
             @endforeach
             </ul>
@@ -31,7 +39,15 @@
         <ul>
             @foreach($seasonList as $key => $season)
                     <li class="p-2 row-start-2 col-start-1" wire:loading.remove>
-                        <a  href="#" class="text-blue-600 hover:text-blue-900" wire:click="searchAndShowSession('{{$key}}')"> {{ $season }}</a>
+                        <a href="#"
+                        wire:click="searchAndShowSession('{{ $key }}')"
+                        onclick="updateSearchUrl('{{ explode(',', $key)[1] }}', '{{ explode(',', $key)[0] }}'); return false;"
+                        class="text-blue-600 hover:text-blue-900"
+                    >
+                        {{ $season }}
+                    </a>
+
+
                     </li>
             @endforeach
         </ul>
@@ -64,3 +80,48 @@
 @endif
 </div>
 </div>
+
+<script>
+    function updateSearchUrl(leagueId, seasonId = null) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('leagueId', leagueId);
+        if (seasonId) {
+            url.searchParams.set('seasonId', seasonId);
+        } else {
+            url.searchParams.delete('seasonId');
+        }
+
+        history.pushState({}, '', url);
+    }
+
+    function runRestoreSearchState() {
+        const url = new URL(window.location.href);
+        const leagueId = url.searchParams.get('leagueId');
+        const seasonId = url.searchParams.get('seasonId');
+
+        if (leagueId) {
+            @this.restoreSearchState({
+                leagueId: leagueId,
+                seasonId: seasonId
+            });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', runRestoreSearchState);
+
+    window.addEventListener('popstate', runRestoreSearchState);
+
+    window.addEventListener('search-session-later', (e) => {
+        const { leagueId, seasonId } = e.detail;
+        setTimeout(() => {
+            if (Livewire.first()) {
+                Livewire.first().runSearchSession({ leagueId, seasonId });
+            }
+        }, 100);
+    });
+</script>
+
+
+
+
+

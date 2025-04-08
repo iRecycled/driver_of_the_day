@@ -18,11 +18,31 @@ class IracingApiSearch extends Component
     public $sessionsList = [];
     public $leagueList = [];
     public $seasonList = [];
+    public $leagueId;
+    public $seasonId;
+    public $sessionId;
     public $error;
     public $loading = false;
+    public $deferredSeasonSearch;
+    public $deferredLeagueId;
 
     public function auth() {
         return new iRacing(env('IRACING_EMAIL'), env('IRACING_PASSWORD'), env('IRACING_COOKIE_PATH'));
+    }
+
+    public function mount() {
+        $leagueId = request()->query('leagueId');
+        $seasonId = request()->query('seasonId');
+
+        if ($leagueId) {
+            $this->leagueId = (int)$leagueId;
+            $this->searchAndShowSeason($this->leagueId);
+
+            if ($seasonId) {
+                $this->seasonId = (int)$seasonId;
+                $this->searchAndShowSession($this->seasonId . ',' . $this->leagueId);
+            }
+        }
     }
 
     public function searchByLeagueName() {
@@ -51,7 +71,8 @@ class IracingApiSearch extends Component
         $this->lastFunctionCalled = 'searchByLeagueName';
     }
 
-    public function searchAndShowSeason($leagueId) {
+    public function searchAndShowSeason($leagueId)
+    {
         try {
             $this->loading = true;
             $iracing = $this->auth();
@@ -62,11 +83,19 @@ class IracingApiSearch extends Component
             foreach ($seasons->seasons as $key => $season) {
                 $this->seasonList[$season->season_id . "," . $season->league_id] = $season->season_name;
             }
+
+            $this->lastFunctionCalled = 'searchAndShowSeason';
+
+            if ($this->deferredSeasonSearch && $this->deferredLeagueId) {
+                $this->searchAndShowSession($this->deferredSeasonSearch . ',' . $this->deferredLeagueId);
+                $this->deferredSeasonSearch = null;
+                $this->deferredLeagueId = null;
+            }
+
         } catch (Exception $e) {
             $this->loading = false;
             $this->error = $e->getMessage();
         }
-        $this->lastFunctionCalled = 'searchAndShowSeason';
     }
 
     public function searchAndShowSession($combinedIds) {
@@ -83,7 +112,6 @@ class IracingApiSearch extends Component
                         Carbon::parse($session->launch_at)->format('F jS, Y')
                     ];
 
-                    # Add the race to the database
                     $race = Race::updateOrCreate(
                         ['session_id' => $session->subsession_id, 'league_id' => $leagueId],
                         [
@@ -107,5 +135,29 @@ class IracingApiSearch extends Component
     public function render()
     {
         return view('livewire.iracing-api-search');
+    }
+
+    protected $listeners = ['restoreSearchState', 'runSearchSession'];
+
+    public function restoreSearchState($params = [])
+    {
+        logger('Restoring search state with', $params);
+
+        $this->reset(['leagueList', 'seasonList', 'sessionsList', 'error', 'lastFunctionCalled']);
+
+        if (isset($params['leagueId'])) {
+            $this->leagueId = (int)$params['leagueId'];
+            $this->searchAndShowSeason($this->leagueId);
+
+            if (isset($params['seasonId'])) {
+                $this->seasonId = (int)$params['seasonId'];
+                $this->searchAndShowSession($this->seasonId . ',' . $this->leagueId);
+            }
+        }
+    }
+
+    public function runSearchSession($params)
+    {
+        $this->searchAndShowSession($params['seasonId'] . ',' . $params['leagueId']);
     }
 }

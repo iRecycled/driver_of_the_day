@@ -23,6 +23,7 @@ Route::get('race/{id}/results', '\App\Http\Controllers\RaceController@results');
 Route::get('race/links/{id}', '\App\Http\Controllers\RaceController@links');
 Route::get('race/qr/{id}', '\App\Http\Controllers\RaceController@showQR');
 Route::get('race/dotd/{id}', '\App\Http\Controllers\RaceController@showDOTD');
+Route::get('/race/create', function () {return view('race.create');})->name('race.create');
 
 Route::middleware([
     'auth:sanctum',
